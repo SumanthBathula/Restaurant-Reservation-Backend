@@ -586,19 +586,20 @@ app.post('/api/admin/tables', authenticate, authorizeAdmin, async (req, res) => 
   }
 });
 
+// ROOT ROUTE (must be before 404)
+app.get("/", (req, res) => {
+  res.send("Restaurant Reservation Backend is running 🚀");
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+  res.status(500).json({ error: "Something went wrong!" });
 });
 
-// 404 handler
+// 404 handler (KEEP THIS LAST)
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+  res.status(404).json({ error: "Route not found" });
 });
 
-// Start server
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;
