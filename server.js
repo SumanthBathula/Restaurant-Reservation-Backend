@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv').config();
 
+import './.env/MONGODB_URI'; 
+
 const app = express();
 
 // Middleware
@@ -12,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://sumanth:tpE9lqoZPfrTBI6e@sumanth.afweq.mongodb.net/?retryWrites=true&w=majority&appName=sumanth/restaurant-reservation', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/restaurant-reservation', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
