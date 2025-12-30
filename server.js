@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
+require('dotenv').config();
 const mongoose = require("mongoose");
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -26,11 +27,12 @@ mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
 })
 .then(() => {
-  console.log(" Connected to MongoDB");
+  console.log("✅ Connected to MongoDB");
 })
 .catch((err) => {
-  console.error("MongoDB connection error:", err);
+  console.error("❌ MongoDB connection error:", err);
 });
+
 
 // ==================== SCHEMAS ====================
 
