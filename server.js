@@ -12,13 +12,14 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/restaurant-reservation', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://sumanth:tpE9lqoZPfrTBI6e@sumanth.afweq.mongodb.net/?retryWrites=true&w=majority&appName=sumanth/restaurant-reservation', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
   console.log('Connected to MongoDB');
   seedTables();
 }).catch(err => console.error('MongoDB connection error:', err));
+
 // ==================== SCHEMAS ====================
 
 // User Schema
@@ -586,7 +587,7 @@ app.post('/api/admin/tables', authenticate, authorizeAdmin, async (req, res) => 
 });
 
 // DELETE /api/admin/tables/:id
-app.delete('/api/tables/:id', async (req, res) => {
+app.delete('/tables/:id', async (req, res) => {
   const tableId = req.params.id;
 
   try {
