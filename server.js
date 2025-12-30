@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://sumanth:tpE9lqoZPfrTBI6e@sumanth.afweq.mongodb.net/?retryWrites=true&w=majority&appName=sumanth/restaurant-reservation', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/restaurant-reservation', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
@@ -584,6 +584,29 @@ app.post('/api/admin/tables', authenticate, authorizeAdmin, async (req, res) => 
     res.status(500).json({ error: 'Error creating table' });
   }
 });
+
+// DELETE /api/admin/tables/:id
+app.delete('/api/tables/:id', async (req, res) => {
+  const tableId = req.params.id;
+
+  try {
+    const table = await Table.findById(tableId);
+    if (!table) return res.status(404).json({ error: 'Table not found' });
+
+    // Optional: check if table has active reservations
+    const activeReservations = await Reservation.find({ tableId, status: 'active' });
+    if (activeReservations.length > 0) {
+      return res.status(400).json({ error: 'Cannot delete table with active reservations' });
+    }
+
+    await Table.findByIdAndDelete(tableId);
+    res.json({ message: 'Table deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting table:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 
 // ROOT ROUTE (must be before 404)
 app.get("/", (req, res) => {
