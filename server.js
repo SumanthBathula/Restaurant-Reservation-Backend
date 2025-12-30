@@ -12,28 +12,13 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-require('dotenv').config();
-const mongoose = require("mongoose");
-
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  console.error("MONGODB_URI is missing in environment variables");
-  process.exit(1);
-}
-
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://sumanth:tpE9lqoZPfrTBI6e@sumanth.afweq.mongodb.net/?retryWrites=true&w=majority&appName=sumanth/restaurant-reservation', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-})
-.then(() => {
-  console.log("✅ Connected to MongoDB");
-})
-.catch((err) => {
-  console.error("❌ MongoDB connection error:", err);
-});
-
-
+}).then(() => {
+  console.log('Connected to MongoDB');
+  seedTables();
+}).catch(err => console.error('MongoDB connection error:', err));
 // ==================== SCHEMAS ====================
 
 // User Schema
