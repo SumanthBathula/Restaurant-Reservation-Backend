@@ -587,7 +587,7 @@ app.post('/api/admin/tables', authenticate, authorizeAdmin, async (req, res) => 
 });
 
 // DELETE /api/admin/tables/:id
-app.delete('/tables/:id', async (req, res) => {
+app.delete('api/tables/:id', async (req, res) => {
   const tableId = req.params.id;
 
   try {
